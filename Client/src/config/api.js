@@ -1,0 +1,1 @@
+export const BASE_URL_DEV_API = "http://localhost:3000"

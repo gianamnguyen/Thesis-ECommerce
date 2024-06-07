@@ -1,0 +1,126 @@
+@import "@assets/css/_variables.scss";
+.manage-products {
+  padding: 20px;
+}
+.manage-products__title {
+  font-family: "Times New Roman", Times, serif;
+  font-weight: 600;
+  color: #003459 !important;
+  line-height: 50px;
+  margin-bottom: 0;
+  text-transform: uppercase;
+}
+.manage-products__create {
+  background: #f7dba7;
+  border: none;
+  height: 40px;
+  font-size: 12px;
+  font-family: "Times New Roman", Times, serif;
+  font-weight: 500;
+  color: #003459;
+  text-transform: uppercase;
+  border: solid 1px #f7dba7;
+  border-radius: 10px;
+  padding: 0 20px;
+  transition: ease-in-out all 0.3s;
+}
+.manage-products__create:hover {
+  transition: ease-in-out all 0.3s;
+  transform: scale(1.03);
+}
+.manage-products .box-image {
+  width: 300px;
+}
+.manage-products .box-image .img-item-box .img-item {
+  width: 100%;
+  height: 120px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+.manage-products .edit-icon {
+  width: 20px;
+  height: 20px;
+  transition: ease-in-out all 0.3s;
+  cursor: pointer;
+}
+.manage-products .edit-icon:hover {
+  transition: ease-in-out all 0.3s;
+  transform: scale(1.1);
+}
+.manage-products .delete-icon {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  transition: ease-in-out all 0.3s;
+}
+.manage-products .delete-icon:hover {
+  transition: ease-in-out all 0.3s;
+  transform: scale(1.1);
+}
+.create-product {
+  padding: 20px;
+}
+.create-product__title {
+  font-family: "Times New Roman", Times, serif;
+  font-weight: 600;
+  color: #003459 !important;
+  line-height: 50px;
+  margin-bottom: 0;
+  text-transform: uppercase;
+}
+.create-product__formCreate .btn-confirm {
+  border: 1.5px solid #003459;
+  border-radius: 57px;
+  background: #fceed5;
+  height: 48px;
+  transition: ease all 0.4s;
+}
+.create-product__formCreate .btn-confirm span {
+  font-family: "SVN-Gilroy";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #003459;
+}
+.create-product__formCreate .btn-confirm:hover {
+  transition: ease all 0.4s;
+  transform: scale(1.1);
+}
+.create-product__formCreate .order-payment-information {
+  height: 100%;
+}
+.create-product__formCreate .order-payment-information__title {
+  font-family: "SVN-Gilroy";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 36px;
+  color: #003459;
+}
+.create-product__formCreate .order-payment-information__content-box {
+  margin: 20px 0;
+}
+.create-product__formCreate .order-payment-information__content-box:first-child {
+  margin-top: 0;
+}
+.create-product__formCreate .order-payment-information__content-box:last-child {
+  margin-bottom: 0;
+}
+.create-product__formCreate .order-payment-information__content-box h4 {
+  font-family: "SVN-Gilroy";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 24px;
+  color: #00171f;
+}
+.create-product__formCreate .order-payment-information__content-box p {
+  font-family: "SVN-Gilroy";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 18px;
+  color: #667479;
+  margin-left: 20px;
+}
