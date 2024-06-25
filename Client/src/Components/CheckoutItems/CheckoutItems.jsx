@@ -15,7 +15,7 @@ import { resetCart } from "../../redux/cart/actions"
 import { formatToCurrencyVND } from "../../utility/index"
 
 // @service
-import { createOrder } from '../../service/order';
+import { createOrder, createPaymentWithMOMO } from '../../service/order';
 
 // @constants
 import { SUCCESS, METHOD_PAYMENT } from '../../constants';
@@ -34,6 +34,27 @@ const CheckoutItems = () => {
   const [loading, setLoading] = useState(false)
 
   // console.log("userCart", userCart)
+
+  const createPaymentMomo = async (orderId) => {
+    try {
+      const req = {
+        amount: JSON.stringify(userCart.totalPrice),
+        orderId: orderId,
+        orderInfo: userCart?.listProduct?.map(item => item?.product?.name).join(", ")
+      }
+      const res = await createPaymentWithMOMO(req)
+      if (res.retCode === 0) {
+        dispatch(resetCart())
+        setTimeout(() => {
+          // navigate(res?.retData)
+          window.location.href = res?.retData
+        }, 2000)
+      }
+      // console.log("res", res);
+    } catch (err) {
+      console.log("FETCHING FAIL!", err)
+    }
+  }
 
   const fetchCreateOrder = async () => {
     try {
@@ -67,10 +88,14 @@ const CheckoutItems = () => {
           description: res?.retText,
           duration: 2,
         })
-        dispatch(resetCart())
-        setTimeout(() => {
-          window.location.href = "/"
-        }, 2000)
+        if (methodPayment === METHOD_PAYMENT.MOMO) {
+          createPaymentMomo(res?.retData?._id)
+        } else {
+          dispatch(resetCart())
+          setTimeout(() => {
+            window.location.href = "/"
+          }, 2000)
+        }
       } else {
         notification.error({
           message: "Fail",
@@ -128,9 +153,10 @@ const CheckoutItems = () => {
             </div>
             <div className="form-group">
               <select id="methodPayment" className="form-control" defaultValue={METHOD_PAYMENT.COD} onChange={(e) => { setMethodPayment(e.target.value) }}>
-           
+                <option value="" disabled selected>Select method payment...</option>
                 <option value={METHOD_PAYMENT.ATM_BANKING}>Atm banking</option>
                 <option value={METHOD_PAYMENT.COD}>COD</option>
+                <option value={METHOD_PAYMENT.MOMO}>MOMO</option>
                 {/* <option>State 3</option> */}
               </select>
               <label for="methodPayment">Method payment</label>
@@ -173,9 +199,9 @@ const CheckoutItems = () => {
           </div>
           <div>
             <p>Banking Information:
-              <br/> 
+              <br />
               MB Bank: 0943709292
-              <br/> 
+              <br />
               Nội dung chuyển khoản: Tên và Số điện thoại khách mua hàng
             </p>
           </div>

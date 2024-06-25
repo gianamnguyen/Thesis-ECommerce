@@ -18,46 +18,48 @@ class CartController {
       }
 
       if (!record) {
-        Product.findOne({ _id: productId }).exec(async (err, product) => {
-          if (err) {
-            res.status(500).json({
-              retCode: 2,
-              retText: "System error",
-              retData: "Please try again later",
-            });
-            return
-          }
+        Product.findOne({ _id: productId })
+          .exec(async (err, product) => {
+            console.log("product", product)
+            if (err) {
+              res.status(500).json({
+                retCode: 2,
+                retText: "System errors",
+                retData: "Please try again later",
+              });
+              return
+            }
 
-          if (!product) {
+            if (!product) {
+              res.json({
+                retCode: 1,
+                retText: "Product does not exist!",
+                retData: null,
+              });
+              return
+            }
+
+            const payload = {
+              userId,
+              totalPrice: product.price,
+              listProduct: [
+                {
+                  productId,
+                  product: product,
+                  quantity,
+                  total: product.price
+                }
+              ]
+            }
+            const cart = new Cart(payload);
+            const result = await cart.save();
             res.json({
-              retCode: 1,
-              retText: "Product does not exist!",
-              retData: null,
+              retCode: 0,
+              retText: "Push product into cart successfully!",
+              retData: result,
             });
             return
-          }
-
-          const payload = {
-            userId,
-            totalPrice: product.price,
-            listProduct: [
-              {
-                productId,
-                product: productId,
-                quantity,
-                total: product.price
-              }
-            ]
-          }
-          const cart = new Cart(payload);
-          const result = await cart.save();
-          res.json({
-            retCode: 0,
-            retText: "Push product into cart successfully!",
-            retData: result,
-          });
-          return
-        })
+          })
       } else {
         const isExistProductInCart = record.listProduct.find(item => item.productId === productId)
         if (isExistProductInCart) {

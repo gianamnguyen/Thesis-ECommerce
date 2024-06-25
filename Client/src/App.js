@@ -16,6 +16,7 @@ import LoginSignup from "./Pages/LoginSignup";
 import Checkout from "./Pages/Checkout"
 import ManageOrder from "./Pages/ManageOrder";
 import OrderDetail from "./Pages/OrderDetail";
+import Thank from "./Pages/Thank";
 
 // @assets
 import men_banner from "./Components/Assets/Banner-2.png";
@@ -56,6 +57,7 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/manage-orders" element={<ManageOrder />} />
           <Route path='/manage-orders/:orderId' element={<OrderDetail />} />
+          <Route path='/thank' element={<Thank />} />
         </Routes>
         <Footer />
       </Router>
