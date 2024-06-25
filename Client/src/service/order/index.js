@@ -22,3 +22,14 @@ export const createPaymentWithMOMO = async (payload) => {
   })
   return data
 }
+
+export const updateDetailOrder = async (payload) => {
+  const { id, statusOrder } = payload || {}
+  const { data } = await apiMethod.put(
+    API_ORDER.UPDATE_DETAIL_ORDER + `/${id}`,
+    {
+      statusOrder
+    }
+  )
+  return data
+}
