@@ -254,7 +254,7 @@ const Home = () => {
 
         <div className="d-flex flex-row justify-content-center align-items-center gap-3">
           <Input
-            placeholder="Enter your pets to search"
+            placeholder="Enter your product name"
             onChange={(e) => handleSeachItem(e)}
             value={input}
           />
