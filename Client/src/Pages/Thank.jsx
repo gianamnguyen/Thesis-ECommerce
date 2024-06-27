@@ -6,12 +6,18 @@ function Thank() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const orderId = params.get('orderId');
-  // console.log("orderId", orderId)
+  const resultCode = params.get('resultCode');
+  // console.log("resultCode", resultCode)
+
   const [loading, setLoading] = React.useState(false)
 
   useEffect(() => {
-    if (orderId) {
-      fetchUpdateDetailOrder()
+    if (parseInt(resultCode) === 1006) {
+      return
+    } else {
+      if (orderId) {
+        fetchUpdateDetailOrder()
+      }
     }
   }, [orderId])
 
@@ -39,8 +45,23 @@ function Thank() {
       alignItems: "center",
       height: 500
     }}>
-      <h1>Thanks for your payment</h1>
-      <p>We had confirmed that your money are sent to the owner's account of the store</p>
+      {loading ? <h1 style={{ fontSize: 30 }}>Loading...</h1> : (
+        <>
+          {parseInt(resultCode) === 1006
+            ? (
+              <>
+                <h1>Payment fail</h1>
+                <p>Please try to pay your order as soon as possible</p>
+              </>
+            )
+            : (
+              <>
+                <h1>Thanks for your payment</h1>
+                <p>We had confirmed that your money are sent to the owner's account of the store</p>
+              </>
+            )}
+        </>
+      )}
     </div>
   )
 }
