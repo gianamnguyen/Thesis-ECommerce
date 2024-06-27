@@ -31,7 +31,7 @@ function Dashboard() {
   useEffect(() => {
     const payload = {
       page: PAGE_DEFAULT,
-      size: LIMIT_DEFAULT,
+      size: 10000,
       code: "",
     };
     fetchGetListOrders(payload);
