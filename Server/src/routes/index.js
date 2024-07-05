@@ -11,9 +11,13 @@ const newsRouter = require("./news");
 const categoriesRouter = require("./categories")
 const attribute = require("./attribute")
 const paymentRouter = require("./payment")
+const promotionRouter = require("./promotion")
 // "start": "nodemon --inspect src/index.js",
 
 function route(app) {
+  // promotion
+  app.use("/promotion", promotionRouter)
+
   // payment
   app.use("/payment", paymentRouter)
 
