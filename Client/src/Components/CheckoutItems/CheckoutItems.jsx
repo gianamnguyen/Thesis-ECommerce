@@ -1,15 +1,15 @@
 import '../Assets/Css/bootstrap.min.css';
 import "./CheckoutItems.css";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // @component
 import { notification } from 'antd';
 
 // @redux
-import { cartUser } from '../../redux/cart/selector';
-import { resetCart } from "../../redux/cart/actions"
+import { cartUser, loadingCart } from '../../redux/cart/selector';
+import { resetCart, getCart } from "../../redux/cart/actions"
 
 // @utility
 import { formatToCurrencyVND } from "../../utility/index"
@@ -18,12 +18,14 @@ import { formatToCurrencyVND } from "../../utility/index"
 import { createOrder, createPaymentWithMOMO } from '../../service/order';
 
 // @constants
-import { SUCCESS, METHOD_PAYMENT } from '../../constants';
+import { SUCCESS, METHOD_PAYMENT, PAGE_NUMBER } from '../../constants';
+import { applyPromotion, cancelPromotion, getPromotions } from '../../service/promotion';
 
 const CheckoutItems = () => {
   const dispatch = useDispatch()
 
   const userCart = useSelector(cartUser)
+  const cartLoading = useSelector(loadingCart)
 
   const [fullName, setFullName] = useState("")
   const [mail, setMail] = useState("")
@@ -33,7 +35,67 @@ const CheckoutItems = () => {
 
   const [loading, setLoading] = useState(false)
 
+  const [loadingPromotion, setLoadingPromotion] = useState(false)
+  const [promotions, setPromotions] = useState([])
   // console.log("userCart", userCart)
+
+  useEffect(() => {
+    const req = {
+      page: PAGE_NUMBER,
+      size: 10000,
+      promotionSearch: ""
+    }
+    fetchGetListPromotions(req)
+  }, [])
+
+  const fetchGetListPromotions = async (payload) => {
+    try {
+      setLoadingPromotion(true)
+      const res = await getPromotions(payload)
+      if (res?.retCode === SUCCESS) {
+        setPromotions(res?.retData?.promotions)
+      }
+      // console.log("res", res)
+    } catch (err) {
+      console.log("FETCHING FAIL!", err)
+    } finally {
+      setLoadingPromotion(false)
+    }
+  }
+
+  const handleApplyPromotion = async (promotionId) => {
+    try {
+      const payload = {
+        "cartId": userCart?._id,
+        "promotionId": promotionId
+      }
+      const res = await applyPromotion(payload)
+      if (res.retCode === SUCCESS) {
+        dispatch(getCart({ userId: userCart?.userId }))
+      }
+    } catch (err) {
+      console.log("FETCHING FAIL!", err)
+    } finally {
+
+    }
+  }
+
+  const handleCancelPromotion = async () => {
+    try {
+      const payload = {
+        "cartId": userCart?._id,
+        "promotionId": userCart?.promotionId
+      }
+      const res = await cancelPromotion(payload)
+      if (res.retCode === SUCCESS) {
+        dispatch(getCart({ userId: userCart?.userId }))
+      }
+    } catch (err) {
+      console.log("FETCHING FAIL!", err)
+    } finally {
+
+    }
+  }
 
   const createPaymentMomo = async (orderId) => {
     try {
@@ -189,14 +251,50 @@ const CheckoutItems = () => {
         <div className="col-md-4">
           <div className="order-summary">
             <h4>Order Summary</h4>
-            {userCart?.listProduct?.map((item, index) => {
-              return (
-                <p key={index}> {item?.product?.name} x {item?.quantity} <span className="float-right">{formatToCurrencyVND(item?.product?.price)}</span></p>
-              )
-            })}
+            {cartLoading
+              ? "Loading..."
+              : userCart?.listProduct?.map((item, index) => {
+                return (
+                  <p key={index}> {item?.product?.name} x {item?.quantity} <span className="float-right">{formatToCurrencyVND(item?.product?.price)}</span></p>
+                )
+              })}
             <hr />
             <p>Total <span className="float-right">{formatToCurrencyVND(userCart?.totalPrice)}</span></p>
           </div>
+          {loadingPromotion
+            ? (
+              <h4>Loading...</h4>
+            )
+            : (
+              <div className='d-flex flex-column justify-content-start'>
+                <h3>List of promotions:</h3>
+                {!!userCart?.promotionId
+                  ? (
+                    <div className='d-flex flex-column justify-content-center align-items-center gap-3'>
+                      <button disabled className='btn btn-warning' style={{ border: "none" }}>Promotion is applied</button>
+                      <button className='btn btn-warning' style={{ border: "none" }} onClick={() => handleCancelPromotion()}>Cancel promotion?</button>
+                    </div>
+                  )
+                  : promotions?.map((promotion, index) => {
+                    return (
+                      <div key={index} className='d-flex flex-row justify-content-between align-items-center'>
+                        <button
+                          type='button'
+                          className='w-25 btn btn-info'
+                          style={{
+                            border: "none"
+                          }}
+                          onClick={() => handleApplyPromotion(promotion?._id)}
+                        >
+                          <span className='text-light'>{promotion?.name}</span>
+                        </button>
+
+                        <p style={{ paddingBottom: 0 }}>Quantity: {promotion?.quantity}</p>
+                      </div>
+                    )
+                  })}
+              </div>
+            )}
           <div>
             <p>Banking Information:
               <br />

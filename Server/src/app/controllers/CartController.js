@@ -49,7 +49,8 @@ class CartController {
                   quantity,
                   total: product.price
                 }
-              ]
+              ],
+              promotionId: ""
             }
             const cart = new Cart(payload);
             const result = await cart.save();
@@ -129,6 +130,7 @@ class CartController {
             {
               $set: {
                 totalPrice: record.totalPrice + price,
+                promotionId: !!record?.promotionId ? record?.promotionId : ""
               },
               $push: {
                 listProduct: {

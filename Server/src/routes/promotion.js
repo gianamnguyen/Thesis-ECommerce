@@ -47,5 +47,12 @@ router.post(
   PromotionController.applyPromotion
 )
 
+/* CANCEL PROMOTION */
+router.post(
+  "/cancel-promotion",
+  [authJwt.verifyToken],
+  PromotionController.cancelPromotion
+)
+
 
 module.exports = router;

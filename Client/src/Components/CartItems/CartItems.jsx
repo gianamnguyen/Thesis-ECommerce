@@ -76,6 +76,10 @@ const CartItems = () => {
               <p>Shipping Fee</p>
               <p>Free</p>
             </div>
+            <div className="cartitems-total-item">
+              <p>Promotion</p>
+              <p>{!!userCart?.promotionId ? "Applied" : "No applied"}</p>
+            </div>
             <hr />
             <div className="cartitems-total-item">
               <h3>Total</h3>

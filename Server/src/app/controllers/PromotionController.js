@@ -89,6 +89,85 @@ class PromotionController {
     })
   }
 
+  cancelPromotion(req, res, next) {
+    const { cartId, promotionId } = req?.body || {}
+    const handleUpdateTotalPrice = (listProduct, totalPrice) => {
+      const totalPriceOfListProduct = listProduct?.map(item => item?.total).reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+      const substract = totalPriceOfListProduct - totalPrice
+
+      return totalPrice + substract
+    }
+
+    Cart.findOne({ _id: cartId }).exec((err, cart) => {
+      if (err) {
+        res.status(404).json({
+          retCode: 1,
+          retText: "Cart not found!",
+          retData: null
+        })
+        return
+      }
+
+      Cart.updateOne(
+        { _id: cartId },
+        {
+          $set: {
+            promotionId: "",
+            totalPrice: handleUpdateTotalPrice(cart?.listProduct, cart.totalPrice),
+          }
+        }
+      ).exec((err, update) => {
+        if (err) {
+          res.status(404).json({
+            retCode: 1,
+            retText: "Cart not found!",
+            retData: null
+          })
+          return
+        }
+
+        Promotion.findOne(
+          { _id: promotionId },
+        ).exec((err, promotion) => {
+          if (err) {
+            res.status(404).json({
+              retCode: 1,
+              retText: "Promotion not found!",
+              retData: null
+            })
+            return
+          }
+
+          Promotion.updateOne(
+            { _id: promotionId },
+            {
+              $set: {
+                quantity: promotion?.quantity + 1
+              }
+            }
+          ).exec((err, update) => {
+            if (err) {
+              res.status(404).json({
+                retCode: 1,
+                retText: "Promotion not found!",
+                retData: null
+              })
+              return
+            }
+            res.status(200).json({
+              retCode: 0,
+              retText: "Cancel promotion successfully",
+              retData: update
+            })
+          })
+
+        })
+
+      })
+    })
+
+  }
+
   async createPromotion(req, res, next) {
     // console.log(req)
     try {

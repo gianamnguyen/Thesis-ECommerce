@@ -30,8 +30,7 @@ const Cart = new Schema(
       }
     ],
     promotionId: {
-      type: Schema.Types.ObjectId,
-      ref: "Promotion"
+      type: String,
     }
   },
   { timestamps: true }
