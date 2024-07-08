@@ -39,7 +39,8 @@ class PromotionController {
             },
             {
               $set: {
-                totalPrice: handleApplyPromotion(cart?.totalPrice, promotion?.discount)
+                totalPrice: handleApplyPromotion(cart?.totalPrice, promotion?.discount),
+                promotionId: promotionId
               }
             }
           ).exec((err, update) => {

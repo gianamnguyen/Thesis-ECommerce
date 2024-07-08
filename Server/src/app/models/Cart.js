@@ -29,6 +29,10 @@ const Cart = new Schema(
         },
       }
     ],
+    promotionId: {
+      type: Schema.Types.ObjectId,
+      ref: "Promotion"
+    }
   },
   { timestamps: true }
 );
