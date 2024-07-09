@@ -26,7 +26,7 @@ class CategoryController {
   // [GET] all items
   async getAllItemsAdmin(req, res, next) {
     try {
-      const result = await Category.find({ status: "publish" }).exec()
+      const result = await Category.find(/* { status: "publish" } */).exec()
       res.json({
         retCode: 0,
         retText: "List category in admin",
