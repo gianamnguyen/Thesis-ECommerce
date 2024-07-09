@@ -17,6 +17,7 @@ import Checkout from "./Pages/Checkout"
 import ManageOrder from "./Pages/ManageOrder";
 import OrderDetail from "./Pages/OrderDetail";
 import Thank from "./Pages/Thank";
+import PayWithMetamask from "./Pages/PayWithMetamask";
 
 // @assets
 import men_banner from "./Components/Assets/Banner-2.png";
@@ -58,6 +59,7 @@ function App() {
           <Route path="/manage-orders" element={<ManageOrder />} />
           <Route path='/manage-orders/:orderId' element={<OrderDetail />} />
           <Route path='/thank' element={<Thank />} />
+          <Route path='/pay-with-metamask' element={<PayWithMetamask />} />
         </Routes>
         <Footer />
       </Router>

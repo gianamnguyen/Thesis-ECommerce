@@ -4,6 +4,8 @@ import { useLocation } from "react-router-dom"
 
 function Thank() {
   const location = useLocation();
+  const { idOrderForMetamaskPayment } = location.state || {}
+
   const params = new URLSearchParams(location.search);
   const orderId = params.get('orderId');
   const resultCode = params.get('resultCode');
@@ -15,7 +17,7 @@ function Thank() {
     if (parseInt(resultCode) === 1006) {
       return
     } else {
-      if (orderId) {
+      if (orderId || idOrderForMetamaskPayment) {
         fetchUpdateDetailOrder()
       }
     }
@@ -25,7 +27,7 @@ function Thank() {
     try {
       setLoading(true)
       const req = {
-        id: orderId,
+        id: orderId || idOrderForMetamaskPayment,
         statusOrder: 1
       }
       return await updateDetailOrder(req)

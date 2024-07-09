@@ -11,5 +11,6 @@ export const USER_INFO = "USER_INFO"
 export const METHOD_PAYMENT = {
   COD: "cod",
   ATM_BANKING: "atm-banking",
-  MOMO: "MOMO"
+  MOMO: "MOMO",
+  METAMASK: "metamask"
 }

@@ -3,6 +3,7 @@ import "./CheckoutItems.css";
 
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from "react-router-dom"
 
 // @component
 import { notification } from 'antd';
@@ -23,6 +24,7 @@ import { applyPromotion, cancelPromotion, getPromotions } from '../../service/pr
 
 const CheckoutItems = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const userCart = useSelector(cartUser)
   const cartLoading = useSelector(loadingCart)
@@ -152,6 +154,13 @@ const CheckoutItems = () => {
         })
         if (methodPayment === METHOD_PAYMENT.MOMO) {
           createPaymentMomo(res?.retData?._id)
+        } else if (methodPayment === METHOD_PAYMENT.METAMASK) {
+          navigate("/pay-with-metamask", {
+            state: {
+              orderId: res?.retData?._id,
+              totalPrice: userCart?.totalPrice
+            }
+          })
         } else {
           dispatch(resetCart())
           setTimeout(() => {
@@ -219,6 +228,7 @@ const CheckoutItems = () => {
                 <option value={METHOD_PAYMENT.ATM_BANKING}>Atm banking</option>
                 <option value={METHOD_PAYMENT.COD}>COD</option>
                 <option value={METHOD_PAYMENT.MOMO}>MOMO</option>
+                <option value={METHOD_PAYMENT.METAMASK}>Metamask</option>
                 {/* <option>State 3</option> */}
               </select>
               <label for="methodPayment">Method payment</label>
