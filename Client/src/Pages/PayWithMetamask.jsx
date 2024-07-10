@@ -7,7 +7,7 @@ import { notification } from 'antd';
 
 import { getEthExchangeRate, getUsdToVndExchangeRate } from '../service/common'
 
-const WALLET_ADDRESS_OWNER = "0xAFdF41f48E7796580B909054FF75b3428ecD9E1B"
+const WALLET_ADDRESS_OWNER = "0xf45Cc55776A1E8a9dae85FdF37d62108Fcc80437"
 
 export const usdToEth = (usdAmount, ethRate) => {
   return usdAmount / ethRate;
@@ -110,7 +110,7 @@ function PayWithMetamask() {
           </div>
           <div className="form-group">
             <input type="text" className="form-control" id="ether" placeholder=" " value={ether} onChange={(e) => setEther(e.target.value)} />
-            <label htmlFor="ether">Email</label>
+            <label htmlFor="ether">Price</label>
           </div>
         </form>
         {!!error && (<h1 className="bg-red-200 p-4 rounded-lg text-base font-bold tracking-widest text-red-600">{error}</h1>)}
