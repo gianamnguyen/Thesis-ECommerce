@@ -14,6 +14,13 @@ export default [
     submenu: [],
   },
   {
+    id: "promotion",
+    title: "Quản lí promotion",
+    titleI18n: "MENU:promotion",
+    to: "/manage-promotion",
+    submenu: [],
+  },
+  {
     id: "attribute",
     title: "Quản lí thuộc tính",
     titleI18n: "MENU:attribute",

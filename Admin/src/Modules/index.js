@@ -7,5 +7,6 @@ export default [
   { key: "News" },
   { key: "Category" },
   { key: "Attribute" },
-  { key: "Dashboard" }
+  { key: "Dashboard" },
+  { key: "Promotion" }
 ];
