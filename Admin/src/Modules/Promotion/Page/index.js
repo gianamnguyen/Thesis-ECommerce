@@ -170,7 +170,7 @@ function CategoryPage() {
   return (
     <div className="manage-products">
       <div className="d-flex flex-row justify-content-between align-items-center mb-3">
-        <h1 className="manage-products__title">Categories List</h1>
+        <h1 className="manage-products__title">Promotion List</h1>
 
         <div className="d-flex flex-row justify-content-center align-items-center gap-3">
           <button

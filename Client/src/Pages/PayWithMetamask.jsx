@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserProvider, parseEther } from "ethers"
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 // @component
 import { notification } from 'antd';
 
 import { getEthExchangeRate, getUsdToVndExchangeRate } from '../service/common'
-
+import { resetCart } from '../redux/cart/actions';
 const WALLET_ADDRESS_OWNER = "0xf45Cc55776A1E8a9dae85FdF37d62108Fcc80437"
 
 export const usdToEth = (usdAmount, ethRate) => {
@@ -14,6 +15,7 @@ export const usdToEth = (usdAmount, ethRate) => {
 }
 
 function PayWithMetamask() {
+  const dispatch = useDispatch()
   const location = useLocation()
   const navigate = useNavigate()
   const { orderId, totalPrice } = location?.state || {}
@@ -58,6 +60,7 @@ function PayWithMetamask() {
           console.log("data tx", data)
           if (Object.keys(data).length > 0) {
             console.log("pay sucess")
+            dispatch(resetCart())
             notification.success({
               message: "Pay order successfully!",
               description: "Your order has been successfully paid",
